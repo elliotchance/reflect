@@ -1,4 +1,4 @@
-elliotchance/reflect
+elliotchance.reflect
 ====================
 
 Runtime reflection for [V](https://vlang.io).
@@ -7,17 +7,28 @@ V does not carry runtime information about types. Although compile-time
 reflection is more performant it can be limiting in some cases that can't be
 avoided.
 
+Installation
+------------
+
+```bash
+v install elliotchance.reflect
+```
+
 Values
 ------
 
 A `Value` can be created from any literal or simple value, for example:
 
 ```v
-v := reflect.value_of(1.23)
+import elliotchance.reflect
 
-println(v.kind)        // "f64"
-println(v.get_f64())   // 1.23
-println(v.get_int())   // V panic: value must be int but is f64
+fn main() {
+	v := reflect.value_of(1.23)
+
+	println(v.kind)        // "f64"
+	println(v.get_f64())   // 1.23
+	println(v.get_int())   // V panic: value must be int but is f64
+}
 ```
 
 This becomes especially useful when dealing with arrays of mixed types:
