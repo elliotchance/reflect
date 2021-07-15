@@ -17,7 +17,5 @@ jobs:
       with:
         v-version: latest
       id: v
-    - name: Build repository app
-      run: v .
     - name: Run V tests
       run: v test .
