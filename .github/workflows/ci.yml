@@ -18,4 +18,4 @@ jobs:
         v-version: latest
       id: v
     - name: Run V tests
-      run: v test .
+      run: cd $GITHUB_WORKSPACE && v test .
