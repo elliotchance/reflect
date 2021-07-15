@@ -12,10 +12,12 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        path: reflect
     - name: Set up V version latest
       uses: nocturlab/setup-vlang-action@v1
       with:
         v-version: latest
       id: v
     - name: Run V tests
-      run: cd $GITHUB_WORKSPACE && v test .
+      run: v test reflect
