@@ -17,6 +17,14 @@ pub struct Value {
 	value_f32    f32
 	value_f64    f64
 
+<<<<<<< HEAD
+=======
+	array_len int
+	array_cap int
+	array_elem_size int
+	array voidptr
+
+>>>>>>> 79bf144 (WIP)
 pub:
 	typ Type
 }
@@ -117,6 +125,42 @@ pub fn value_of<T>(x T) Value {
 	panic('unsupported value $x')
 }
 
+// array_of creates a Value from an array.
+pub fn array_of<T>(x []T) Value {
+	return Value{
+		kind: Kind.is_array,
+		array_len: x.len,
+		array_cap: x.cap,
+		array_elem_size: x.element_size,
+		array: x.data,
+	}
+}
+
+pub fn (v Value) len() int {
+	v.must_be(Kind.is_array)
+	return v.array_len
+}
+
+pub fn (v Value) cap() int {
+	v.must_be(Kind.is_array)
+	return v.array_cap
+}
+
+pub fn (v Value) get_index(index int) Value {
+	v.must_be(Kind.is_array)
+
+	if v.array_len < 0 || v.array_len <= index {
+		panic('array index $index is out of bounds (len = ${v.array_len})')
+	}
+
+	v2 := Value{kind: Kind.is_int}
+	unsafe {
+		C.memcpy(&v2.value_int, voidptr(u64(v.array) + u64(index * v.array_elem_size)), v.array_elem_size)
+	}
+
+	return v2
+}
+
 fn (v Value) must_be(k Kind) {
 	if v.typ.kind != k {
 		panic('value must be $k but is $v.typ.kind')
@@ -187,3 +231,8 @@ pub fn (v Value) get_f64() f64 {
 	v.must_be(Kind.is_f64)
 	return v.value_f64
 }
+
+// pub fn (v Value) get_type() Type {
+// 	v.must_be(Kind.is_f64)
+// 	return v.value_f64
+// }

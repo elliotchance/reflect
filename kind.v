@@ -14,6 +14,7 @@ pub enum Kind {
 	is_rune
 	is_f32
 	is_f64
+	is_array
 }
 
 pub fn (k Kind) str() string {
@@ -31,5 +32,6 @@ pub fn (k Kind) str() string {
 		.is_rune { 'rune' }
 		.is_f32 { 'f32' }
 		.is_f64 { 'f64' }
+		.is_array { 'array' }
 	}
 }

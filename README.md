@@ -10,6 +10,7 @@ avoided.
 - [Installation](#installation)
 - [Values](#values)
 - [Types](#types)
+- [Arrays](#arrays)
 
 Installation
 ------------
@@ -72,3 +73,20 @@ All `Values` have a `Type` which can be accessed on the `.typ` field.
 `is_int`, `is_i64`, `is_byte`, `is_u16`, `is_u32`, `is_u64`, `is_rune`,
 `is_f32`, `is_f64`.
 - `.str()`: The string representation that matches the compile-time type in V.
+
+Arrays
+------
+
+```v
+import elliotchance.reflect
+
+fn main() {
+	v := reflect.array_of([5, 6, 7])
+
+	println(v.typ)         // "[]int"
+	println(v.typ.kind)    // "array"
+	println(v.len())       // 3
+	println(v.cap())       // 3
+	println(v.get_int())   // V panic: value must be int but is f64
+}
+```
