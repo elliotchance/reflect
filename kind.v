@@ -1,6 +1,8 @@
 module reflect
 
 pub enum Kind {
+	// is_none is a special placeholder for cases where a type does not apply.
+	is_none
 	is_bool
 	is_string
 	is_i8
@@ -19,6 +21,7 @@ pub enum Kind {
 
 pub fn (k Kind) str() string {
 	return match k {
+		.is_none { '<none>' }
 		.is_bool { 'bool' }
 		.is_string { 'string' }
 		.is_i8 { 'i8' }

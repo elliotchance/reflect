@@ -72,6 +72,7 @@ All `Values` have a `Type` which can be accessed on the `.typ` field.
 - `.kind`: one of the `Kind` values: `is_bool`, `is_string`, `is_i8`, `is_i16`,
 `is_int`, `is_i64`, `is_byte`, `is_u16`, `is_u32`, `is_u64`, `is_rune`,
 `is_f32`, `is_f64`.
+- `.elem`: Only applies for arrays, describes the element type.
 - `.str()`: The string representation that matches the compile-time type in V.
 
 Arrays
@@ -83,10 +84,12 @@ import elliotchance.reflect
 fn main() {
 	v := reflect.array_of([5, 6, 7])
 
-	println(v.typ)         // "[]int"
-	println(v.typ.kind)    // "array"
-	println(v.len())       // 3
-	println(v.cap())       // 3
-	println(v.get_int())   // V panic: value must be int but is f64
+	println(v.typ)                      // "[]int"
+	println(v.typ.kind)                 // "array"
+	println(v.typ.elem.kind)            // "int"
+	println(v.len())                    // 3
+	println(v.cap())                    // 3
+	println(v.get_index(1).get_int())   // 6
+	println(v.get_index(5))             // V panic: array index 5 is out of bounds (len = 3)
 }
 ```
