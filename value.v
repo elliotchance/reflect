@@ -16,6 +16,7 @@ pub struct Value {
 	value_rune   rune
 	value_f32    f32
 	value_f64    f64
+
 pub:
 	typ Type
 }
