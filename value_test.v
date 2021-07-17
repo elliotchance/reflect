@@ -105,12 +105,12 @@ fn test_array_of_f64() {
 	assert v.typ.str() == '[]f64'
 }
 
-fn test_len() {
+fn test_array_of_len() {
 	v := array_of([5, 7, 9])
 	assert v.len() == 3
 }
 
-fn test_cap() {
+fn test_array_of_cap() {
 	v := array_of([]f32{len: 1, cap: 5})
 	assert v.len() == 1
 	assert v.cap() == 5
@@ -135,3 +135,64 @@ fn test_get_index_f64() {
 // 	v := array_of([5, 7, 9])
 // 	v.get_index(3)
 // }
+
+fn test_map_of_string_int() {
+	mut m := map[string]int{}
+	m['a'] = 5
+	m['b'] = 7
+	m['c'] = 9
+	v := map_of(m)
+	assert v.typ.kind == Kind.is_map
+	assert v.typ.key.kind == Kind.is_string
+	assert v.typ.elem.kind == Kind.is_int
+	assert v.typ.str() == 'map[string]int'
+	assert v.len() == 3
+}
+
+fn test_get_key_int() {
+	mut m := map[string]int{}
+	m['a'] = 5
+	m['b'] = 7
+	m['c'] = 9
+	v := map_of(m)
+
+	e := v.get_key(value_of('b'))
+	assert e.typ.str() == 'int'
+	assert e.get_int() == 7
+}
+
+// TODO(elliotchance): Not sure how to test for panics?
+// fn test_get_key_bounds() {
+// 	mut m := map[string]int{}
+// 	m['a'] = 5
+// 	m['b'] = 7
+// 	m['c'] = 9
+// 	v := map_of(m)
+
+// 	v.get_key(value_of('d'))
+// }
+
+// TODO(elliotchance): Not sure how to test for panics?
+// fn test_get_key_type() {
+// 	mut m := map[string]int{}
+// 	m['a'] = 5
+// 	m['b'] = 7
+// 	m['c'] = 9
+// 	v := map_of(m)
+
+// 	v.get_key(value_of(123))
+// }
+
+fn test_map_keys() {
+	mut m := map[string]int{}
+	m['a'] = 5
+	m['b'] = 7
+	m['c'] = 9
+	v := map_of(m)
+
+	keys := v.keys()
+	assert keys.len == 3
+
+	expected := [keys[0].get_string(), keys[1].get_string(), keys[2].get_string()]
+	assert expected == ['a', 'b', 'c']
+}
