@@ -17,98 +17,98 @@ pub struct Value {
 	value_f32    f32
 	value_f64    f64
 pub:
-	kind Kind
+	typ Type
 }
 
 // value_of is used to create a Value
 pub fn value_of<T>(x T) Value {
 	$if T is bool {
 		return {
-			kind: Kind.is_bool
+			typ: Type{Kind.is_bool}
 			value_bool: x
 		}
 	}
 
 	$if T is string {
 		return {
-			kind: Kind.is_string
+			typ: Type{Kind.is_string}
 			value_string: x
 		}
 	}
 
 	$if T is i8 {
 		return {
-			kind: Kind.is_i8
+			typ: Type{Kind.is_i8}
 			value_i8: x
 		}
 	}
 
 	$if T is i16 {
 		return {
-			kind: Kind.is_i16
+			typ: Type{Kind.is_i16}
 			value_i16: x
 		}
 	}
 
 	$if T is int {
 		return {
-			kind: Kind.is_int
+			typ: Type{Kind.is_int}
 			value_int: x
 		}
 	}
 
 	$if T is i64 {
 		return {
-			kind: Kind.is_i64
+			typ: Type{Kind.is_i64}
 			value_i64: x
 		}
 	}
 
 	$if T is byte {
 		return {
-			kind: Kind.is_byte
+			typ: Type{Kind.is_byte}
 			value_byte: x
 		}
 	}
 
 	$if T is u16 {
 		return {
-			kind: Kind.is_u16
+			typ: Type{Kind.is_u16}
 			value_u16: x
 		}
 	}
 
 	$if T is u32 {
 		return {
-			kind: Kind.is_u32
+			typ: Type{Kind.is_u32}
 			value_u32: x
 		}
 	}
 
 	$if T is u64 {
 		return {
-			kind: Kind.is_u64
+			typ: Type{Kind.is_u64}
 			value_u64: x
 		}
 	}
 
 	$if T is rune {
 		return {
-			kind: Kind.is_rune
+			typ: Type{Kind.is_rune}
 			value_rune: x
 		}
 	}
 
 	$if T is f32 {
 		return {
-			kind: Kind.is_f32
+			typ: Type{Kind.is_f32}
 			value_f32: x
 		}
 	}
 
 	$if T is f64 {
 		return {
-			kind: Kind.is_f64
+			typ: Type{Kind.is_f64}
 			value_f64: x
 		}
 	}
@@ -117,8 +117,8 @@ pub fn value_of<T>(x T) Value {
 }
 
 fn (v Value) must_be(k Kind) {
-	if v.kind != k {
-		panic('value must be $k but is $v.kind')
+	if v.typ.kind != k {
+		panic('value must be $k but is $v.typ.kind')
 	}
 }
 
