@@ -90,3 +90,48 @@ fn test_value_of_f64() {
 	assert v.typ.str() == 'f64'
 	assert v.get_f64() == 4.56
 }
+
+fn test_array_of_int() {
+	v := array_of([5, 7, 9])
+	assert v.typ.kind == Kind.is_array
+	assert v.typ.elem.kind == Kind.is_int
+	assert v.typ.str() == '[]int'
+}
+
+fn test_array_of_f64() {
+	v := array_of([1.23, 4.56, 7.89])
+	assert v.typ.kind == Kind.is_array
+	assert v.typ.elem.kind == Kind.is_f64
+	assert v.typ.str() == '[]f64'
+}
+
+fn test_len() {
+	v := array_of([5, 7, 9])
+	assert v.len() == 3
+}
+
+fn test_cap() {
+	v := array_of([]f32{len: 1, cap: 5})
+	assert v.len() == 1
+	assert v.cap() == 5
+}
+
+fn test_get_index_int() {
+	v := array_of([5, 7, 9])
+	e := v.get_index(1)
+	assert e.typ.str() == 'int'
+	assert e.get_int() == 7
+}
+
+fn test_get_index_f64() {
+	v := array_of([1.23, 4.56, 7.89])
+	e := v.get_index(2)
+	assert e.typ.str() == 'f64'
+	assert e.get_f64() == 7.89
+}
+
+// TODO(elliotchance): Not sure how to test for panics?
+// fn test_get_index_bounds() {
+// 	v := array_of([5, 7, 9])
+// 	v.get_index(3)
+// }
