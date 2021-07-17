@@ -22,10 +22,11 @@ fn test_parse_type() ? {
 		ParseTypeTest{'rune', Kind.is_rune, none_type(), none_type()},
 		ParseTypeTest{'f32', Kind.is_f32, none_type(), none_type()},
 		ParseTypeTest{'f64', Kind.is_f64, none_type(), none_type()},
-		ParseTypeTest{'[]int', Kind.is_array, &Type{Kind.is_int, none_type(), none_type()}, none_type()},
-		ParseTypeTest{'[]f64', Kind.is_array, &Type{Kind.is_f64, none_type(), none_type()}, none_type()},
-		ParseTypeTest{'map[string]int', Kind.is_map, &Type{Kind.is_int, none_type(), none_type()}, &Type{Kind.is_string, none_type(), none_type()}},
-		ParseTypeTest{'map[f64]string', Kind.is_map, &Type{Kind.is_string, none_type(), none_type()}, &Type{Kind.is_f64, none_type(), none_type()}},
+		ParseTypeTest{'[]int', Kind.is_array, &Type{Kind.is_int, none_type(), none_type(), ''}, none_type()},
+		ParseTypeTest{'[]f64', Kind.is_array, &Type{Kind.is_f64, none_type(), none_type(), ''}, none_type()},
+		ParseTypeTest{'map[string]int', Kind.is_map, &Type{Kind.is_int, none_type(), none_type(), ''}, &Type{Kind.is_string, none_type(), none_type(), ''}},
+		ParseTypeTest{'map[f64]string', Kind.is_map, &Type{Kind.is_string, none_type(), none_type(), ''}, &Type{Kind.is_f64, none_type(), none_type(), ''}},
+		ParseTypeTest{'main.Foo', Kind.is_struct, none_type(), none_type()},
 	]
 	for test in tests {
 		println(test.typ)

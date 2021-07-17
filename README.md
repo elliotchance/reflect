@@ -7,11 +7,18 @@ V does not carry runtime information about types. Although compile-time
 reflection is more performant it can be limiting in some cases that can't be
 avoided.
 
+*IMPORTANT: This project is more to demonstrate that a lot of the runtime
+reflection functionality one might need can be done without technically using
+runtime types. This implementation relies on static code being generated from
+compile-time reflection for known types going into the appropriate
+constructors.*
+
 - [Installation](#installation)
 - [Values](#values)
 - [Types](#types)
 - [Arrays](#arrays)
 - [Maps](#maps)
+- [Structs](#structs)
 
 Installation
 ------------
@@ -118,5 +125,36 @@ fn main() {
 	println(v.get_key(reflect.value_of('b')).get_int())   // 7
 	println(v.get_key(reflect.value_of('d')))             // V panic: key not found: d
 	println(v.get_key(reflect.value_of(123)))             // V panic: value must be string but is int
+}
+```
+
+Structs
+-------
+
+```v
+import elliotchance.reflect
+
+struct Foo {
+	a int
+	b f64
+	c string
+}
+
+fn main() {
+	s := Foo{123, 4.56, 'hello'}
+	v := reflect.struct_of(&s)
+
+	println(v.typ)                    // "main.Foo"
+	println(v.typ.kind)               // "struct"
+	println(v.fields())               // ['a', 'b', 'c']
+	println(v.field('b').typ)         // "f64"
+	println(v.field('b').get_f64())   // 4.56
+	println(v.field('d'))             // V panic: field not found: d
+
+	v.field('b').set_string('hi')     // V panic: value must be f64 but is string
+
+	v.field('c').set_string('hi')
+	println(v.field('c').get_string()) // "hi"
+	println(s.c)                       // "hi"
 }
 ```

@@ -18,6 +18,7 @@ pub enum Kind {
 	is_f64
 	is_array
 	is_map
+	is_struct
 }
 
 pub fn (k Kind) str() string {
@@ -38,5 +39,6 @@ pub fn (k Kind) str() string {
 		.is_f64 { 'f64' }
 		.is_array { 'array' }
 		.is_map { 'map' }
+		.is_struct { 'struct' }
 	}
 }
