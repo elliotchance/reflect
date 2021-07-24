@@ -17,6 +17,7 @@ pub enum Kind {
 	is_f32
 	is_f64
 	is_array
+	is_map
 }
 
 pub fn (k Kind) str() string {
@@ -36,5 +37,6 @@ pub fn (k Kind) str() string {
 		.is_f32 { 'f32' }
 		.is_f64 { 'f64' }
 		.is_array { 'array' }
+		.is_map { 'map' }
 	}
 }

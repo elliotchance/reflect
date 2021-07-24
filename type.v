@@ -3,14 +3,19 @@ module reflect
 pub struct Type {
 pub:
 	kind Kind
-	// elem only applies for arrays.
+	// elem is the element type for arrays and the value type for maps.
 	elem &Type
+	// key is only used for describing the map key type.
+	key &Type
 }
 
 pub fn (t Type) str() string {
 	match t.kind {
 		.is_array {
-			return '[]' + (*t.elem).str()
+			return '[]${*t.elem}'
+		}
+		.is_map {
+			return 'map[${*t.key}]${*t.elem}'
 		}
 		else {
 			return t.kind.str()
@@ -24,6 +29,7 @@ pub fn none_type() &Type {
 	return &Type{
 		kind: Kind.is_none
 		elem: 0
+		key: 0
 	}
 }
 
@@ -34,6 +40,18 @@ pub fn parse_type(t string) ?Type {
 		return Type{
 			kind: Kind.is_array
 			elem: &elem
+			key: none_type()
+		}
+	}
+
+	if t.starts_with('map[') {
+		parts := t[4..].split(']')
+		key := parse_type(parts[0]) ?
+		elem := parse_type(parts[1]) ?
+		return Type{
+			kind: Kind.is_map
+			elem: &elem
+			key: &key
 		}
 	}
 
@@ -55,5 +73,6 @@ pub fn parse_type(t string) ?Type {
 			else { Kind.is_none }
 		}
 		elem: none_type()
+		key: none_type()
 	}
 }

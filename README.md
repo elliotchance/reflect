@@ -11,6 +11,7 @@ avoided.
 - [Values](#values)
 - [Types](#types)
 - [Arrays](#arrays)
+- [Maps](#maps)
 
 Installation
 ------------
@@ -91,5 +92,31 @@ fn main() {
 	println(v.cap())                    // 3
 	println(v.get_index(1).get_int())   // 6
 	println(v.get_index(5))             // V panic: array index 5 is out of bounds (len = 3)
+}
+```
+
+Maps
+----
+
+```v
+import elliotchance.reflect
+
+fn main() {
+	mut m := map[string]int{}
+	m['a'] = 5
+	m['b'] = 7
+	m['c'] = 9
+
+	v := reflect.map_of(m)
+
+	println(v.typ)                                        // "map[string]int"
+	println(v.typ.kind)                                   // "map"
+	println(v.typ.key.kind)                               // "string"
+	println(v.typ.elem.kind)                              // "int"
+	println(v.len())                                      // 3
+	println(v.keys())                                     // ['a', 'b', 'c']
+	println(v.get_key(reflect.value_of('b')).get_int())   // 7
+	println(v.get_key(reflect.value_of('d')))             // V panic: key not found: d
+	println(v.get_key(reflect.value_of(123)))             // V panic: value must be string but is int
 }
 ```
