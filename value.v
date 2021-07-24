@@ -1,6 +1,7 @@
 module reflect
 
 pub struct Value {
+mut:
 	// TODO(elliot): I know this is extremely wasteful. We'll come up with
 	//  something more sane later.
 	value_bool   bool
@@ -24,7 +25,10 @@ pub struct Value {
 
 	map_keys   []Value
 	map_values []Value
-	// pointer to the array or map
+	// structs
+	f  map[string]voidptr
+	ft map[string]Type
+	// pointer to the array, map or struct
 	obj voidptr
 pub:
 	typ Type
@@ -34,91 +38,91 @@ pub:
 pub fn value_of<T>(x T) Value {
 	$if T is bool {
 		return Value{
-			typ: Type{Kind.is_bool, none_type(), none_type()}
+			typ: Type{Kind.is_bool, none_type(), none_type(), ''}
 			value_bool: x
 		}
 	}
 
 	$if T is string {
 		return Value{
-			typ: Type{Kind.is_string, none_type(), none_type()}
+			typ: Type{Kind.is_string, none_type(), none_type(), ''}
 			value_string: x
 		}
 	}
 
 	$if T is i8 {
 		return Value{
-			typ: Type{Kind.is_i8, none_type(), none_type()}
+			typ: Type{Kind.is_i8, none_type(), none_type(), ''}
 			value_i8: x
 		}
 	}
 
 	$if T is i16 {
 		return Value{
-			typ: Type{Kind.is_i16, none_type(), none_type()}
+			typ: Type{Kind.is_i16, none_type(), none_type(), ''}
 			value_i16: x
 		}
 	}
 
 	$if T is int {
 		return Value{
-			typ: Type{Kind.is_int, none_type(), none_type()}
+			typ: Type{Kind.is_int, none_type(), none_type(), ''}
 			value_int: x
 		}
 	}
 
 	$if T is i64 {
 		return Value{
-			typ: Type{Kind.is_i64, none_type(), none_type()}
+			typ: Type{Kind.is_i64, none_type(), none_type(), ''}
 			value_i64: x
 		}
 	}
 
 	$if T is byte {
 		return Value{
-			typ: Type{Kind.is_byte, none_type(), none_type()}
+			typ: Type{Kind.is_byte, none_type(), none_type(), ''}
 			value_byte: x
 		}
 	}
 
 	$if T is u16 {
 		return Value{
-			typ: Type{Kind.is_u16, none_type(), none_type()}
+			typ: Type{Kind.is_u16, none_type(), none_type(), ''}
 			value_u16: x
 		}
 	}
 
 	$if T is u32 {
 		return Value{
-			typ: Type{Kind.is_u32, none_type(), none_type()}
+			typ: Type{Kind.is_u32, none_type(), none_type(), ''}
 			value_u32: x
 		}
 	}
 
 	$if T is u64 {
 		return Value{
-			typ: Type{Kind.is_u64, none_type(), none_type()}
+			typ: Type{Kind.is_u64, none_type(), none_type(), ''}
 			value_u64: x
 		}
 	}
 
 	$if T is rune {
 		return Value{
-			typ: Type{Kind.is_rune, none_type(), none_type()}
+			typ: Type{Kind.is_rune, none_type(), none_type(), ''}
 			value_rune: x
 		}
 	}
 
 	$if T is f32 {
 		return Value{
-			typ: Type{Kind.is_f32, none_type(), none_type()}
+			typ: Type{Kind.is_f32, none_type(), none_type(), ''}
 			value_f32: x
 		}
 	}
 
 	$if T is f64 {
 		return Value{
-			typ: Type{Kind.is_f64, none_type(), none_type()}
+			typ: Type{Kind.is_f64, none_type(), none_type(), ''}
 			value_f64: x
 		}
 	}
@@ -152,6 +156,21 @@ pub fn map_of<K, V>(x map[K]V) Value {
 		array_or_map_len: x.len
 		map_keys: keys
 		map_values: values
+	}
+}
+
+pub fn struct_of<T>(x &T) Value {
+	mut f := map[string]voidptr{}
+	mut ft := map[string]Type{}
+	$for field in T.fields {
+		f[field.name] = &x.$(field.name)
+		ft[field.name] = parse_type(typeof(field).name) or { panic(err) }
+	}
+	return Value{
+		obj: voidptr(x)
+		f: f
+		ft: ft
+		typ: Type{Kind.is_struct, none_type(), none_type(), ''}
 	}
 }
 
@@ -379,4 +398,107 @@ fn (v Value) str() string {
 pub fn (v Value) keys() []Value {
 	v.must_be(Kind.is_map)
 	return v.map_keys
+}
+
+pub fn (v Value) fields() []string {
+	v.must_be(Kind.is_struct)
+	mut fields := []string{cap: v.f.len}
+	for field, _ in v.f {
+		fields << field
+	}
+
+	return fields
+}
+
+pub fn (v Value) field(name string) Value {
+	v2 := Value{
+		typ: v.ft[name]
+		obj: v.f[name]
+	}
+
+	unsafe {
+		match v2.typ.kind {
+			.is_none {}
+			.is_bool { C.memcpy(voidptr(&v2.value_bool), v.f[name], sizeof(bool)) }
+			.is_string { C.memcpy(voidptr(&v2.value_string), v.f[name], sizeof(string)) }
+			.is_i8 { C.memcpy(voidptr(&v2.value_i8), v.f[name], sizeof(i8)) }
+			.is_i16 { C.memcpy(voidptr(&v2.value_i16), v.f[name], sizeof(i16)) }
+			.is_int { C.memcpy(voidptr(&v2.value_int), v.f[name], sizeof(int)) }
+			.is_i64 { C.memcpy(voidptr(&v2.value_i64), v.f[name], sizeof(i64)) }
+			.is_byte { C.memcpy(voidptr(&v2.value_byte), v.f[name], sizeof(byte)) }
+			.is_u16 { C.memcpy(voidptr(&v2.value_u16), v.f[name], sizeof(u16)) }
+			.is_u32 { C.memcpy(voidptr(&v2.value_u32), v.f[name], sizeof(u32)) }
+			.is_u64 { C.memcpy(voidptr(&v2.value_u64), v.f[name], sizeof(u64)) }
+			.is_rune { C.memcpy(voidptr(&v2.value_rune), v.f[name], sizeof(rune)) }
+			.is_f32 { C.memcpy(voidptr(&v2.value_f32), v.f[name], sizeof(f32)) }
+			.is_f64 { C.memcpy(voidptr(&v2.value_f64), v.f[name], sizeof(f64)) }
+			else { panic('bad type $v2.typ for field $name') }
+		}
+	}
+	return v2
+}
+
+pub fn (v Value) set_bool(x bool) {
+	v.must_be(Kind.is_bool)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_string(x string) {
+	v.must_be(Kind.is_string)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_i8(x i8) {
+	v.must_be(Kind.is_i8)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_i16(x i16) {
+	v.must_be(Kind.is_i16)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_int(x int) {
+	v.must_be(Kind.is_int)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_i64(x i64) {
+	v.must_be(Kind.is_i64)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_byte(x byte) {
+	v.must_be(Kind.is_byte)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_u16(x u16) {
+	v.must_be(Kind.is_u16)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_u32(x u32) {
+	v.must_be(Kind.is_u32)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_u64(x u64) {
+	v.must_be(Kind.is_u64)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_rune(x rune) {
+	v.must_be(Kind.is_rune)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_f32(x f32) {
+	v.must_be(Kind.is_f32)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
+}
+
+pub fn (v Value) set_f64(x f64) {
+	v.must_be(Kind.is_f64)
+	unsafe { C.memcpy(voidptr(v.obj), &x, sizeof(x)) }
 }

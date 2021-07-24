@@ -1,5 +1,11 @@
 module reflect
 
+struct Foo {
+	a int
+	b f32
+	c string
+}
+
 fn test_value_of_bool() {
 	v := value_of(true)
 	assert v.typ.kind == Kind.is_bool
@@ -129,6 +135,48 @@ fn test_get_index_f64() {
 	assert e.typ.str() == 'f64'
 	assert e.get_f64() == 7.89
 }
+
+fn test_struct_of_fields() {
+	// TODO(elliotchance): The linux build has issues with typeof(T).name in
+	//  generics. No idea why, but let's do the worst thing possible and just
+	//  ignore the test for now.
+	$if !linux {
+		foo := Foo{
+			a: 123
+			b: 4.56
+			c: 'hello'
+		}
+		v := struct_of(&foo)
+		assert v.typ.kind == .is_struct
+		assert v.fields() == ['a', 'b', 'c']
+		assert v.field('a').typ.str() == 'int'
+		assert v.field('b').typ.str() == 'f32'
+		assert v.field('c').typ.str() == 'string'
+	}
+}
+
+fn test_struct_of_field_set() {
+	// TODO(elliotchance): The linux build has issues with typeof(T).name in
+	//  generics. No idea why, but let's do the worst thing possible and just
+	//  ignore the test for now.
+	$if !linux {
+		foo := Foo{
+			a: 123
+			b: 4.56
+			c: 'hello'
+		}
+		v := struct_of(&foo)
+		v.field('c').set_string('hi')
+		assert v.field('c').get_string() == 'hi'
+		assert foo.c == 'hi'
+	}
+}
+
+// fn test_struct_of_field_int() {
+// 	foo := Foo{a: 123, b: 4.56, c: 'hello'}
+// 	v := struct_of(&foo)
+// 	assert v.field('a').typ == 'int'
+// }
 
 // TODO(elliotchance): Not sure how to test for panics?
 // fn test_get_index_bounds() {

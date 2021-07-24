@@ -7,6 +7,8 @@ pub:
 	elem &Type
 	// key is only used for describing the map key type.
 	key &Type
+	// name is used for structs
+	name string
 }
 
 pub fn (t Type) str() string {
@@ -16,6 +18,9 @@ pub fn (t Type) str() string {
 		}
 		.is_map {
 			return 'map[${*t.key}]${*t.elem}'
+		}
+		.is_struct {
+			return t.name
 		}
 		else {
 			return t.kind.str()
@@ -70,9 +75,12 @@ pub fn parse_type(t string) ?Type {
 			'rune' { Kind.is_rune }
 			'f32' { Kind.is_f32 }
 			'f64' { Kind.is_f64 }
-			else { Kind.is_none }
+			// Another other name must be a struct name in the form of
+			// "mypkg.MyType".
+			else { Kind.is_struct }
 		}
 		elem: none_type()
 		key: none_type()
+		name: t
 	}
 }
