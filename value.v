@@ -1,19 +1,19 @@
 module reflect
 
 union Val {
-	@bool   bool
-	@string string
-	@i8     i8
-	@i16    i16
-	@int    int
-	@i64    i64
-	@byte   byte
-	@u16    u16
-	@u32    u32
-	@u64    u64
-	@rune   rune
-	@f32    f32
-	@f64    f64
+	bool   bool
+	string string
+	i8     i8
+	i16    i16
+	int    int
+	i64    i64
+	byte   byte
+	u16    u16
+	u32    u32
+	u64    u64
+	rune   rune
+	f32    f32
+	f64    f64
 }
 
 pub struct Value {
@@ -42,7 +42,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_bool, none_type(), none_type(), ''}
 			value: Val{
-				@bool: x
+				bool: x
 			}
 		}
 	}
@@ -51,7 +51,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_string, none_type(), none_type(), ''}
 			value: Val{
-				@string: x
+				string: x
 			}
 		}
 	}
@@ -60,7 +60,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_i8, none_type(), none_type(), ''}
 			value: Val{
-				@i8: x
+				i8: x
 			}
 		}
 	}
@@ -69,7 +69,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_i16, none_type(), none_type(), ''}
 			value: Val{
-				@i16: x
+				i16: x
 			}
 		}
 	}
@@ -78,7 +78,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_int, none_type(), none_type(), ''}
 			value: Val{
-				@int: x
+				int: x
 			}
 		}
 	}
@@ -87,7 +87,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_i64, none_type(), none_type(), ''}
 			value: Val{
-				@i64: x
+				i64: x
 			}
 		}
 	}
@@ -96,7 +96,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_byte, none_type(), none_type(), ''}
 			value: Val{
-				@byte: x
+				byte: x
 			}
 		}
 	}
@@ -105,7 +105,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_u16, none_type(), none_type(), ''}
 			value: Val{
-				@u16: x
+				u16: x
 			}
 		}
 	}
@@ -114,7 +114,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_u32, none_type(), none_type(), ''}
 			value: Val{
-				@u32: x
+				u32: x
 			}
 		}
 	}
@@ -123,7 +123,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_u64, none_type(), none_type(), ''}
 			value: Val{
-				@u64: x
+				u64: x
 			}
 		}
 	}
@@ -132,7 +132,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_rune, none_type(), none_type(), ''}
 			value: Val{
-				@rune: x
+				rune: x
 			}
 		}
 	}
@@ -141,7 +141,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_f32, none_type(), none_type(), ''}
 			value: Val{
-				@f32: x
+				f32: x
 			}
 		}
 	}
@@ -150,7 +150,7 @@ pub fn value_of<T>(x T) Value {
 		return Value{
 			typ: Type{Kind.is_f64, none_type(), none_type(), ''}
 			value: Val{
-				@f64: x
+				f64: x
 			}
 		}
 	}
@@ -273,67 +273,93 @@ fn (v Value) must_be2(k1 Kind, k2 Kind) {
 
 pub fn (v Value) get_bool() bool {
 	v.must_be(Kind.is_bool)
-	return v.value.@bool
+	unsafe {
+		return v.value.bool
+	}
 }
 
 pub fn (v Value) get_string() string {
 	v.must_be(Kind.is_string)
-	return v.value.@string
+	unsafe {
+	return v.value.string
+	}
 }
 
 pub fn (v Value) get_i8() i8 {
 	v.must_be(Kind.is_i8)
-	return v.value.@i8
+	unsafe {
+	return v.value.i8
+	}
 }
 
 pub fn (v Value) get_i16() i16 {
 	v.must_be(Kind.is_i16)
-	return v.value.@i16
+	unsafe {
+	return v.value.i16
+	}
 }
 
 pub fn (v Value) get_int() int {
 	v.must_be(Kind.is_int)
-	return v.value.@int
+	unsafe {
+	return v.value.int
+	}
 }
 
 pub fn (v Value) get_i64() i64 {
 	v.must_be(Kind.is_i64)
-	return v.value.@i64
+	unsafe {
+	return v.value.i64
+	}
 }
 
 pub fn (v Value) get_byte() byte {
 	v.must_be(Kind.is_byte)
-	return v.value.@byte
+	unsafe {
+	return v.value.byte
+	}
 }
 
 pub fn (v Value) get_u16() u16 {
 	v.must_be(Kind.is_u16)
-	return v.value.@u16
+	unsafe {
+	return v.value.u16
+	}
 }
 
 pub fn (v Value) get_u32() u32 {
 	v.must_be(Kind.is_u32)
-	return v.value.@u32
+	unsafe {
+	return v.value.u32
+	}
 }
 
 pub fn (v Value) get_u64() u64 {
 	v.must_be(Kind.is_u64)
-	return v.value.@u64
+	unsafe {
+	return v.value.u64
+	}
 }
 
 pub fn (v Value) get_rune() rune {
 	v.must_be(Kind.is_rune)
-	return v.value.@rune
+	unsafe {
+	return v.value.rune
+	}
 }
 
 pub fn (v Value) get_f32() f32 {
 	v.must_be(Kind.is_f32)
-	return v.value.@f32
+	unsafe {
+	return v.value.f32
+	}
 }
 
 pub fn (v Value) get_f64() f64 {
 	v.must_be(Kind.is_f64)
-	return v.value.@f64
+	unsafe {
+	return v.value.f64
+	}
 }
 
 pub fn (v Value) get_key(key Value) Value {
@@ -344,19 +370,7 @@ pub fn (v Value) get_key(key Value) Value {
 		if k.eq(key) {
 			return Value{
 				typ: *v.typ.elem
-				value_bool: v.map_values[i].value.@bool
-				value_string: v.map_values[i].value.@string
-				value_i8: v.map_values[i].value.@i8
-				value_i16: v.map_values[i].value.@i16
-				value_int: v.map_values[i].value.@int
-				value_i64: v.map_values[i].value.@i64
-				value_byte: v.map_values[i].value.@byte
-				value_u16: v.map_values[i].value.@u16
-				value_u32: v.map_values[i].value.@u32
-				value_u64: v.map_values[i].value.@u64
-				value_rune: v.map_values[i].value.@rune
-				value_f32: v.map_values[i].value.@f32
-				value_f64: v.map_values[i].value.@f64
+				value: v.map_values[i].value
 			}
 		}
 	}
@@ -369,70 +383,74 @@ fn (v Value) eq(v2 Value) bool {
 		return false
 	}
 
-	return match v.typ.kind {
-		.is_bool {
-			v.value.@bool == v2.value.@bool
-		}
-		.is_string {
-			v.value.@string == v2.value.@string
-		}
-		.is_i8 {
-			v.value.@i8 == v2.value.@i8
-		}
-		.is_i16 {
-			v.value.@i16 == v2.value.@i16
-		}
-		.is_int {
-			v.value.@int == v2.value.@int
-		}
-		.is_i64 {
-			v.value.@i64 == v2.value.@i64
-		}
-		.is_byte {
-			v.value.@byte == v2.value.@byte
-		}
-		.is_u16 {
-			v.value.@u16 == v2.value.@u16
-		}
-		.is_u32 {
-			v.value.@u32 == v2.value.@u32
-		}
-		.is_u64 {
-			v.value.@u64 == v2.value.@u64
-		}
-		.is_rune {
-			v.value.@rune == v2.value.@rune
-		}
-		.is_f32 {
-			v.value.@f32 == v2.value.@f32
-		}
-		.is_f64 {
-			v.value.@f64 == v2.value.@f64
-		}
-		else {
-			panic('cannot compare $v.str() and $v2.str()')
-			false
+	unsafe {
+		return match v.typ.kind {
+			.is_bool {
+				v.value.bool == v2.value.bool
+			}
+			.is_string {
+				v.value.string == v2.value.string
+			}
+			.is_i8 {
+				v.value.i8 == v2.value.i8
+			}
+			.is_i16 {
+				v.value.i16 == v2.value.i16
+			}
+			.is_int {
+				v.value.int == v2.value.int
+			}
+			.is_i64 {
+				v.value.i64 == v2.value.i64
+			}
+			.is_byte {
+				v.value.byte == v2.value.byte
+			}
+			.is_u16 {
+				v.value.u16 == v2.value.u16
+			}
+			.is_u32 {
+				v.value.u32 == v2.value.u32
+			}
+			.is_u64 {
+				v.value.u64 == v2.value.u64
+			}
+			.is_rune {
+				v.value.rune == v2.value.rune
+			}
+			.is_f32 {
+				v.value.f32 == v2.value.f32
+			}
+			.is_f64 {
+				v.value.f64 == v2.value.f64
+			}
+			else {
+				panic('cannot compare $v.str() and $v2.str()')
+				false
+			}
 		}
 	}
 }
 
 fn (v Value) str() string {
-	return match v.typ.kind {
-		.is_bool { '$v.value.@bool' }
-		.is_string { '$v.value.@string' }
-		.is_i8 { '$v.value.@i8' }
-		.is_i16 { '$v.value.@i16' }
-		.is_int { '$v.value.@int' }
-		.is_i64 { '$v.value.@i64' }
-		.is_byte { '$v.value.@byte' }
-		.is_u16 { '$v.value.@u16' }
-		.is_u32 { '$v.value.@u32' }
-		.is_u64 { '$v.value.@u64' }
-		.is_rune { '$v.value.@rune' }
-		.is_f32 { '$v.value.@f32' }
-		.is_f64 { '$v.value.@f64' }
-		// TODO(elliotchance): We should print arrays and maps
-		else { '<Value:$v.typ.kind>' }
+	unsafe {
+		return match v.typ.kind {
+			.is_bool { '$v.value.bool' }
+			.is_string { '$v.value.string' }
+			.is_i8 { '$v.value.i8' }
+			.is_i16 { '$v.value.i16' }
+			.is_int { '$v.value.int' }
+			.is_i64 { '$v.value.i64' }
+			.is_byte { '$v.value.byte' }
+			.is_u16 { '$v.value.u16' }
+			.is_u32 { '$v.value.u32' }
+			.is_u64 { '$v.value.u64' }
+			.is_rune { '$v.value.rune' }
+			.is_f32 { '$v.value.f32' }
+			.is_f64 { '$v.value.f64' }
+			// TODO(elliotchance): We should print arrays and maps
+			else { '<Value:$v.typ.kind>' }
+		}
 	}
 }
 
@@ -460,19 +478,19 @@ pub fn (v Value) field(name string) Value {
 	unsafe {
 		match v2.typ.kind {
 			.is_none {}
-			.is_bool { C.memcpy(voidptr(&v2.value.@bool), v.f[name], sizeof(bool)) }
-			.is_string { C.memcpy(voidptr(&v2.value.@string), v.f[name], sizeof(string)) }
-			.is_i8 { C.memcpy(voidptr(&v2.value.@i8), v.f[name], sizeof(i8)) }
-			.is_i16 { C.memcpy(voidptr(&v2.value.@i16), v.f[name], sizeof(i16)) }
-			.is_int { C.memcpy(voidptr(&v2.value.@int), v.f[name], sizeof(int)) }
-			.is_i64 { C.memcpy(voidptr(&v2.value.@i64), v.f[name], sizeof(i64)) }
-			.is_byte { C.memcpy(voidptr(&v2.value.@byte), v.f[name], sizeof(byte)) }
-			.is_u16 { C.memcpy(voidptr(&v2.value.@u16), v.f[name], sizeof(u16)) }
-			.is_u32 { C.memcpy(voidptr(&v2.value.@u32), v.f[name], sizeof(u32)) }
-			.is_u64 { C.memcpy(voidptr(&v2.value.@u64), v.f[name], sizeof(u64)) }
-			.is_rune { C.memcpy(voidptr(&v2.value.@rune), v.f[name], sizeof(rune)) }
-			.is_f32 { C.memcpy(voidptr(&v2.value.@f32), v.f[name], sizeof(f32)) }
-			.is_f64 { C.memcpy(voidptr(&v2.value.@f64), v.f[name], sizeof(f64)) }
+			.is_bool { C.memcpy(voidptr(&v2.value.bool), v.f[name], sizeof(bool)) }
+			.is_string { C.memcpy(voidptr(&v2.value.string), v.f[name], sizeof(string)) }
+			.is_i8 { C.memcpy(voidptr(&v2.value.i8), v.f[name], sizeof(i8)) }
+			.is_i16 { C.memcpy(voidptr(&v2.value.i16), v.f[name], sizeof(i16)) }
+			.is_int { C.memcpy(voidptr(&v2.value.int), v.f[name], sizeof(int)) }
+			.is_i64 { C.memcpy(voidptr(&v2.value.i64), v.f[name], sizeof(i64)) }
+			.is_byte { C.memcpy(voidptr(&v2.value.byte), v.f[name], sizeof(byte)) }
+			.is_u16 { C.memcpy(voidptr(&v2.value.u16), v.f[name], sizeof(u16)) }
+			.is_u32 { C.memcpy(voidptr(&v2.value.u32), v.f[name], sizeof(u32)) }
+			.is_u64 { C.memcpy(voidptr(&v2.value.u64), v.f[name], sizeof(u64)) }
+			.is_rune { C.memcpy(voidptr(&v2.value.rune), v.f[name], sizeof(rune)) }
+			.is_f32 { C.memcpy(voidptr(&v2.value.f32), v.f[name], sizeof(f32)) }
+			.is_f64 { C.memcpy(voidptr(&v2.value.f64), v.f[name], sizeof(f64)) }
 			else { panic('bad type $v2.typ for field $name') }
 		}
 	}
