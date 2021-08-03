@@ -237,21 +237,14 @@ pub fn (v Value) get_index(index int) Value {
 			// .is_rune { voidptr(&v2.value_rune) }
 			// .is_f32 { voidptr(&v2.value_f32) }
 			// .is_f64 { voidptr(&v2.value_f64) }
-			.is_bool,
-			.is_string,
-			.is_i8,
-			.is_i16,
-			.is_int,
-			.is_i64,
-			.is_byte,
-			.is_u16,
-			.is_u32,
-			.is_u64,
-			.is_rune,
-			.is_f32,
-			.is_f64 { voidptr(&v2.value) }
+			.is_bool, .is_string, .is_i8, .is_i16, .is_int, .is_i64, .is_byte, .is_u16, .is_u32,
+			.is_u64, .is_rune, .is_f32, .is_f64 {
+				voidptr(&v2.value)
+			}
 			// TODO(elliotchance): Doesn't support multidimensional arrays.
-			else { voidptr(0) }
+			else {
+				voidptr(0)
+			}
 		}
 
 		C.memcpy(dest, voidptr(u64(v.obj) + u64(index * v.array_elem_size)), v.array_elem_size)
@@ -281,84 +274,84 @@ pub fn (v Value) get_bool() bool {
 pub fn (v Value) get_string() string {
 	v.must_be(Kind.is_string)
 	unsafe {
-	return v.value.string
+		return v.value.string
 	}
 }
 
 pub fn (v Value) get_i8() i8 {
 	v.must_be(Kind.is_i8)
 	unsafe {
-	return v.value.i8
+		return v.value.i8
 	}
 }
 
 pub fn (v Value) get_i16() i16 {
 	v.must_be(Kind.is_i16)
 	unsafe {
-	return v.value.i16
+		return v.value.i16
 	}
 }
 
 pub fn (v Value) get_int() int {
 	v.must_be(Kind.is_int)
 	unsafe {
-	return v.value.int
+		return v.value.int
 	}
 }
 
 pub fn (v Value) get_i64() i64 {
 	v.must_be(Kind.is_i64)
 	unsafe {
-	return v.value.i64
+		return v.value.i64
 	}
 }
 
 pub fn (v Value) get_byte() byte {
 	v.must_be(Kind.is_byte)
 	unsafe {
-	return v.value.byte
+		return v.value.byte
 	}
 }
 
 pub fn (v Value) get_u16() u16 {
 	v.must_be(Kind.is_u16)
 	unsafe {
-	return v.value.u16
+		return v.value.u16
 	}
 }
 
 pub fn (v Value) get_u32() u32 {
 	v.must_be(Kind.is_u32)
 	unsafe {
-	return v.value.u32
+		return v.value.u32
 	}
 }
 
 pub fn (v Value) get_u64() u64 {
 	v.must_be(Kind.is_u64)
 	unsafe {
-	return v.value.u64
+		return v.value.u64
 	}
 }
 
 pub fn (v Value) get_rune() rune {
 	v.must_be(Kind.is_rune)
 	unsafe {
-	return v.value.rune
+		return v.value.rune
 	}
 }
 
 pub fn (v Value) get_f32() f32 {
 	v.must_be(Kind.is_f32)
 	unsafe {
-	return v.value.f32
+		return v.value.f32
 	}
 }
 
 pub fn (v Value) get_f64() f64 {
 	v.must_be(Kind.is_f64)
 	unsafe {
-	return v.value.f64
+		return v.value.f64
 	}
 }
 
