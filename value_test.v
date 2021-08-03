@@ -172,11 +172,11 @@ fn test_struct_of_field_set() {
 	}
 }
 
-// fn test_struct_of_field_int() {
-// 	foo := Foo{a: 123, b: 4.56, c: 'hello'}
-// 	v := struct_of(&foo)
-// 	assert v.field('a').typ == 'int'
-// }
+fn test_struct_of_field_int() {
+	foo := Foo{a: 123, b: 4.56, c: 'hello'}
+	v := struct_of(&foo)
+	assert v.field('a').typ.str() == 'int'
+}
 
 // TODO(elliotchance): Not sure how to test for panics?
 // fn test_get_index_bounds() {
