@@ -365,44 +365,10 @@ fn (v Value) eq(v2 Value) bool {
 
 	unsafe {
 		return match v.typ.kind {
-			.is_bool {
-				v.value.bool == v2.value.bool
-			}
-			.is_string {
+			.is_bool, .is_string, .is_i8, .is_i16, .is_int, .is_i64, .is_byte, .is_u16, .is_u32,
+			.is_u64, .is_rune, .is_f32, .is_f64 {
+				// Biggest by memory, 16 bytes
 				v.value.string == v2.value.string
-			}
-			.is_i8 {
-				v.value.i8 == v2.value.i8
-			}
-			.is_i16 {
-				v.value.i16 == v2.value.i16
-			}
-			.is_int {
-				v.value.int == v2.value.int
-			}
-			.is_i64 {
-				v.value.i64 == v2.value.i64
-			}
-			.is_byte {
-				v.value.byte == v2.value.byte
-			}
-			.is_u16 {
-				v.value.u16 == v2.value.u16
-			}
-			.is_u32 {
-				v.value.u32 == v2.value.u32
-			}
-			.is_u64 {
-				v.value.u64 == v2.value.u64
-			}
-			.is_rune {
-				v.value.rune == v2.value.rune
-			}
-			.is_f32 {
-				v.value.f32 == v2.value.f32
-			}
-			.is_f64 {
-				v.value.f64 == v2.value.f64
 			}
 			else {
 				panic('cannot compare $v.str() and $v2.str()')
