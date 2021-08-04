@@ -224,19 +224,6 @@ pub fn (v Value) get_index(index int) Value {
 	}
 	unsafe {
 		dest := match v2.typ.kind {
-			// .is_bool { voidptr(&v2.value_bool) }
-			// .is_string { voidptr(&v2.value_string) }
-			// .is_i8 { voidptr(&v2.value_i8) }
-			// .is_i16 { voidptr(&v2.value_i16) }
-			// .is_int { voidptr(&v2.value_int) }
-			// .is_i64 { voidptr(&v2.value_i64) }
-			// .is_byte { voidptr(&v2.value_byte) }
-			// .is_u16 { voidptr(&v2.value_u16) }
-			// .is_u32 { voidptr(&v2.value_u32) }
-			// .is_u64 { voidptr(&v2.value_u64) }
-			// .is_rune { voidptr(&v2.value_rune) }
-			// .is_f32 { voidptr(&v2.value_f32) }
-			// .is_f64 { voidptr(&v2.value_f64) }
 			.is_bool, .is_string, .is_i8, .is_i16, .is_int, .is_i64, .is_byte, .is_u16, .is_u32,
 			.is_u64, .is_rune, .is_f32, .is_f64 {
 				voidptr(&v2.value)
